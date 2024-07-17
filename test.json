@@ -1,0 +1,87 @@
+{
+"id":"440_76561198879722456_954813911934392595757f32352a5d9e",
+"steamid":"76561198879722456",
+"appid":440,
+"currencies":{
+    "metal":19.05,
+    "keys":2
+},
+"value":{
+    "raw":188.71,
+    "short":"2.22 keys",
+    "long":"2 keys, 19.05 ref"
+},
+"tradeOffersPreferred":true,
+"buyoutOnly":true,
+"details":"sell_Starlight_Haze_Firearm_Protector        ,   𝟮 𝗸𝗲𝘆𝘀, 𝟭𝟵.𝟬𝟱 𝗿𝗲𝗳",
+"listedAt":1719968544,
+"bumpedAt":1719982982,
+"intent":"buy",
+"count":1,
+"status":"active",
+"source":"userAgent",
+"item":{
+    "appid":440,
+    "baseName":"Firearm Protector",
+    "defindex":31310,
+    "id":"",
+    "imageUrl":"https://steamcdn-a.akamaihd.net/apps/440/icons/hwn2022_firearm_protector.028b588da2a26f8342c202d12922b42ad989a3b8.png",
+    "marketName":"Unusual Firearm Protector",
+    "name":"Starlight Haze Firearm Protector",
+    "origin":"None",
+    "originalId":"",
+    "price":{
+        "steam":{
+            "currency":"usd",
+            "short":"$25.62",
+            "long":"1,348.42 ref, 15.90 keys",
+            "raw":1075.9131683168316,
+            "value":2562
+        }
+    },
+    "quality":{
+        "id":5,
+        "name":"Unusual",
+        "color":"#8650AC"
+    },
+    "summary":"Level 1-100 Hat",
+    "class":[
+        "Soldier"
+    ],
+    "slot":"misc",
+    "particle":{
+        "id":278,
+        "name":"Starlight Haze",
+        "shortName":"starlight haze",
+        "imageUrl":"/images/440/particles/278_94x94.png",
+        "type":"standard"
+    },
+    "tradable":true,
+    "craftable":true,
+    "priceindex":"278"
+},
+"userAgent":{
+    "client":"TF2Autobot - Run your own bot for free",
+    "lastPulse":1719983160
+},
+"user":{
+    "id":"76561198879722456",
+    "name":"🪸ZAIMON🪸",
+    "avatar":"https://avatars.steamstatic.com/a11ade3863334f8f6792ec8d317a94860b4c70c0_medium.jpg",
+    "avatarFull":"https://avatars.steamstatic.com/a11ade3863334f8f6792ec8d317a94860b4c70c0_full.jpg",
+    "premium":false,
+    "online":true,
+    "banned":false,
+    "customNameStyle":"awesome2",
+    "acceptedSuggestions":0,
+    "class":"awesome2",
+    "style":"",
+    "role":"None",
+    "tradeOfferUrl":"https://steamcommunity.com/tradeoffer/new/?partner=919456728&token=1QEgoRMj",
+    "isMarketplaceSeller":false,
+    "flagImpersonated":"None",
+    "bans":[
+        
+    ]
+}
+}
