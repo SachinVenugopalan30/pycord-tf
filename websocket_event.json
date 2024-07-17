@@ -1,0 +1,107 @@
+{
+   "id":"66841d2c71b78aa35d08b536",
+   "event":"listing-update",
+   "payload":{
+      "id":"440_76561199232380670_cb6efac42921632345fad0ff58907446",
+      "steamid":"76561199232380670",
+      "appid":440,
+      "currencies":{
+         "metal":34.22,
+         "keys":29
+      },
+      "value":{
+         "raw":2494.29,
+         "short":"29.4 keys",
+         "long":"29 keys, 34.22 ref"
+      },
+      "tradeOffersPreferred":true,
+      "details":"!sell Green Energy Halogen Head Lamp | 𝐀𝐥𝐥 𝐨𝐟𝐟𝐞𝐫𝐬 𝐚𝐫𝐞 𝐰𝐞𝐥𝐜𝐨𝐦𝐞! | Clone_Two#0002",
+      "listedAt":1719934252,
+      "bumpedAt":1719934132,
+      "intent":"buy",
+      "count":1,
+      "status":"active",
+      "source":"userAgent",
+      "item":{
+         "appid":440,
+         "baseName":"Halogen Head Lamp",
+         "defindex":30041,
+         "id":"",
+         "imageUrl":"https://steamcdn-a.akamaihd.net/apps/440/icons/robo_medic_otolaryngologists_mirror.07c21d1fe0918ccf7c5da9db64d915fecff81ff0.png",
+         "marketName":"Unusual Halogen Head Lamp",
+         "name":"Green Energy Halogen Head Lamp",
+         "origin":"None",
+         "originalId":"",
+         "price":{
+            "steam":{
+               "currency":"usd",
+               "short":"$23.65",
+               "long":"1,244.74 ref, 14.67 keys",
+               "raw":993.1829207920791,
+               "value":2365
+            },
+            "community":{
+               "value":24,
+               "valueHigh":28,
+               "currency":"keys",
+               "raw":2205.58,
+               "short":"24–28 keys",
+               "long":"2,205.58 ref, $41.91",
+               "usd":43.51779,
+               "updatedAt":1606643256,
+               "difference":353.6400000000001
+            },
+            "suggested":{
+               "raw":2205.58,
+               "short":"26 keys",
+               "long":"2,205.58 ref, $41.91",
+               "usd":41.90602
+            }
+         },
+         "quality":{
+            "id":5,
+            "name":"Unusual",
+            "color":"#8650AC"
+         },
+         "summary":"Level 1-100 Hat",
+         "class":[
+            "Medic"
+         ],
+         "slot":"misc",
+         "particle":{
+            "id":9,
+            "name":"Green Energy",
+            "shortName":"g.nrg",
+            "imageUrl":"/images/440/particles/9_94x94.png",
+            "type":"standard"
+         },
+         "tradable":true,
+         "craftable":true,
+         "priceindex":"9"
+      },
+      "userAgent":{
+         "client":"oh hai | Clone_Two#0002, contact me for cool shit if you're interested ;)",
+         "lastPulse":1719934198
+      },
+      "user":{
+         "id":"76561199232380670",
+         "name":"Clone_Theta",
+         "avatar":"https://avatars.steamstatic.com/42f0e27345a99aece740c9256a4da4246e1133b3_medium.jpg",
+         "avatarFull":"https://avatars.steamstatic.com/42f0e27345a99aece740c9256a4da4246e1133b3_full.jpg",
+         "premium":true,
+         "online":true,
+         "banned":false,
+         "customNameStyle":"awesome3",
+         "acceptedSuggestions":0,
+         "class":"awesome3",
+         "style":"",
+         "role":"None",
+         "tradeOfferUrl":"https://steamcommunity.com/tradeoffer/new/?partner=1272114942&token=6fdi4pGe",
+         "isMarketplaceSeller":false,
+         "flagImpersonated":"None",
+         "bans":[
+            
+         ]
+      }
+   }
+}
