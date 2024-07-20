@@ -35,19 +35,18 @@ def db_create(mycursor) -> bool:
         cursor = db.cursor(buffered=True)
         # Creating the actual table that will be used to store listings as they come in
         create_table_query = '''
-        CREATE TABLE IF NOT EXISTS listings_snapshots (
-            listing_id VARCHAR(300) PRIMARY KEY NOT NULL,
+        CREATE TABLE IF NOT EXISTS listing_snapshots (
+            listing_id VARCHAR(300) NOT NULL,
             item_name VARCHAR(300) NOT NULL,
             date DATE NOT NULL,
             time TIME NOT NULL,
-            event_type VARCHAR(10) NOT NULL,
-            intent VARCHAR(10) NOT NULL,
+            event_type VARCHAR(50) NOT NULL,
+            event_intent VARCHAR(10) NOT NULL,
+            steam_id BIGINT NOT NULL,
             price_keys INT NOT NULL,
             price_metal FLOAT NOT NULL,
-            steam_id BIGINT NOT NULL,
-            paint INT,
-            parts JSON,
-            spells JSON
+            is_painted TINYINT(1),
+            is_spelled TINYINT(1)
         );
         '''
         try:
