@@ -19,6 +19,18 @@ class WebSocketService:
         self.socket_url = os.getenv('SOCKET_URL')
     
     
+    def killstreak_effects(self, itemPayload) -> None:
+        '''
+        For future use
+        '''
+        if 'Professional Kilstreak' in itemPayload['item']['name']:
+            print(itemPayload['item']['killstreaker']['name'])
+            print(itemPayload['item']['sheen']['name'])
+            
+        elif 'Specialized Killstreak' in itemPayload['item']['name']:
+            print(itemPayload['item']['sheen']['name'])
+    
+    
     def is_painted(self, itemPayload) -> bool:
         '''
         Creates a function to track painted items, may not be relevant
@@ -27,22 +39,13 @@ class WebSocketService:
             5052, 5027, 5031, 5032, 5040, 5033, 5076, 5029, 5077, 5034, 5038, 5051, 5039, 5035, 
             5037, 5054, 5030, 5055, 5056, 5036, 5053, 5028, 5063, 5046, 5062, 5064, 5065, 5061, 5060
         ]
-        
-        if itemPayload['item']['defindex'] in paint_cans:
+        if int(itemPayload['item']['defindex']) in paint_cans:
             return False
         try:
-            itemAttributes = itemPayload['item']['attributes']
-            try:
-                if itemAttributes['defindex'] == 142:
-                    return True
-            except TypeError:
-                # comes in here for items like the Duck Journal
-                print(itemAttributes)
-                return False
+            if itemPayload['item']['paint']:
+                return True
         except KeyError:
             return False
-        print("No paint found")
-        return False
 
 
     def is_spelled(self, itemPayload) -> bool:
@@ -50,17 +53,11 @@ class WebSocketService:
         Creates a flag for spelled items for future tracking
         '''
         try:
-            itemAttributes = itemPayload['item']['attributes']
-            try:
-                if itemAttributes['defindex'] in [1004, 1005, 1006, 1007, 1008, 1009]:
-                    return True
-            except TypeError:
-                # comes in here for items like the Duck Journal
-                return False
+            if itemPayload['item']['spells']:
+                return True
         except KeyError:
             return False
-        print("No Spell found")
-        return False
+
 
     def process_events(self, msg_json) -> list:
         '''
