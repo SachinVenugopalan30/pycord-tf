@@ -132,22 +132,22 @@ class WebSocketService:
         Driver function to start the everything, connect to the websocket, process events, and dump events to the database
         '''
         url = self.socket_url
-        async with websockets.connect(url, max_size=30*100000) as ws:
-            print('Connection established to websocket!')
-            while True:
-                try:
-                    msg = await ws.recv()
-                    msg_json = json.loads(msg)
-                    processed_event_list = self.process_events(msg_json)
-                    res = await self.add_to_database(processed_event_list)
-                    if res:
-                        print(f"Sucessfully dumped {len(processed_event_list)} events into database")
-                    else:
-                        print("Failed to input into database")
-                except websockets.exceptions.ConnectionClosedError:
-                    print("Connection to websocket closed, restarting...")
-                    time.sleep(0.2)
-                    continue
+        while True:
+            try:
+                async with websockets.connect(url, max_size=30*100000) as ws:
+                    print('Connection established to websocket!')
+                    while True:
+                        msg = await ws.recv()
+                        msg_json = json.loads(msg)
+                        processed_event_list = self.process_events(msg_json)
+                        res = await self.add_to_database(processed_event_list)
+                        if res:
+                            print(f"Successfully logged {len(processed_event_list)} events into database")
+                        else:
+                            print("Failed to input into database")
+            except websockets.exceptions.ConnectionClosedError:
+                print("Connection to websocket closed, restarting...")
+                continue
 
 
 if __name__ == '__main__':
