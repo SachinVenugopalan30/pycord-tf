@@ -154,6 +154,20 @@ tests-mypy = ["mypy (>=1.6)", "pytest-mypy-plugins"]
 tests-no-zope = ["attrs[tests-mypy]", "cloudpickle", "hypothesis", "pympler", "pytest (>=4.3.0)", "pytest-xdist[psutil]"]
 
 [[package]]
+name = "discord"
+version = "2.3.2"
+description = "A mirror package for discord.py. Please install that instead."
+optional = false
+python-versions = "*"
+files = [
+    {file = "discord-2.3.2-py3-none-any.whl", hash = "sha256:d7959418799dd3b1e896685812d880169c193468b061b3431fa2a4664febd3da"},
+    {file = "discord-2.3.2.tar.gz", hash = "sha256:cc1ee2dbe6df218ca51519af355b97e87309f8230f58c7f34885feb8e8a76145"},
+]
+
+[package.dependencies]
+"discord.py" = ">=2.3.2"
+
+[[package]]
 name = "discord-py"
 version = "2.4.0"
 description = "A Python wrapper for the Discord API"
@@ -614,4 +628,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "f99beb225be9c7b699726a7898b07247d8fc051e9f397e1db6023bdc2c485d7b"
+content-hash = "6d1afd3ba1d872ac276d1f25ad63e66eb1b4fa3d9d44a1645a43d3a21af6ef1f"

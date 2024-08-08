@@ -7,6 +7,9 @@ import time
 import os
 from dotenv import load_dotenv
 import mariadb
+import discord
+import aiohttp
+from discord import Webhook
 
 class WebSocketService:
     def __init__(self):
@@ -17,8 +20,25 @@ class WebSocketService:
         self.db_name = os.getenv('DB_NAME')
         self.db_table = os.getenv('DB_TABLE')
         self.socket_url = os.getenv('SOCKET_URL')
+        self.webhook_url = os.getenv('DISCORD_WEBHOOK_URL')
     
-    
+    async def webhook_service(self, webhook_type, webhook_title, webhook_message) -> None:
+        async with aiohttp.ClientSession() as session:
+            webhook = Webhook.from_url(self.webhook_url, session=session)
+            if webhook_type == 'info':
+                colour = 0x0187b7
+            elif webhook_type == 'error':
+                colour = 0xb70104
+            else:
+                colour = 0xf9ff00
+            embed = discord.Embed(title=webhook_title, description=webhook_message, colour=colour)
+
+            if webhook_type == 'error':
+                await webhook.send(content='<@242688398475657216>', embed=embed, username='Websocket Service')
+                return
+            await webhook.send(embed=embed, username='Websocket Service')
+
+
     def killstreak_effects(self, itemPayload) -> None:
         '''
         For future use
@@ -123,6 +143,7 @@ class WebSocketService:
             mydb_connection.commit()
             return(True)
         except Exception as e:
+            await self.webhook_service("error", "Error!!", f"Error dumping into database! {e}")
             print(f'Exception occured when trying to insert element {e}')
             return(False)
         
@@ -135,6 +156,7 @@ class WebSocketService:
         while True:
             try:
                 async with websockets.connect(url, max_size=30*100000) as ws:
+                    await self.webhook_service("info", "Information", "Connection established with the websocket!")
                     print('Connection established to websocket!')
                     while True:
                         msg = await ws.recv()
@@ -146,6 +168,7 @@ class WebSocketService:
                         else:
                             print("Failed to input into database")
             except websockets.exceptions.ConnectionClosedError:
+                await self.webhook_service("default", "Information", "Connection closed, restarting...")
                 print("Connection to websocket closed, restarting...")
                 continue
 
