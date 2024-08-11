@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 import mariadb
+from src.item_similarity import match_item
 
 load_dotenv()
 
@@ -22,7 +23,8 @@ def main() -> None:
 async def on_ready():
     print(f'Logged in as {bot.user}!')
     try:
-        await tree.sync()
+        synced_commands = await tree.sync()
+        print(f'Synced {len(synced_commands)} commands.')
     except Exception as e:
         print(f'Error syncing, {e}')
 
@@ -32,15 +34,21 @@ async def hello(ctx: discord.interactions.Interaction):
     await ctx.response.send_message(content=f'Hello, {ctx.user.mention}')
 
 
-@tree.command(name='fetchSnapshot', description='Fetches the last known snapshot for an item')
-async def fetch_last_snapshot(ctx: discord.interactions.Interaction):
-    db_host = os.getenv('DB_HOST', 'localhost')
-    db_user = os.getenv('DB_USER', 'root')
-    db_password = os.getenv('DB_PASSWORD', 'password')
-    db_name = os.getenv('DB_NAME')
-    db_table = os.getenv('DB_TABLE')
+@tree.command(name='fetch_snapshot', description='Fetches the last known snapshot for an item')
+@app_commands.describe(item_name="Name of the item")
+async def fetch_last_snapshot(ctx: discord.interactions.Interaction, item_name: str):
 
-    pass
+    # db_host = os.getenv('DB_HOST', 'localhost')
+    # db_user = os.getenv('DB_USER', 'root')
+    # db_password = os.getenv('DB_PASSWORD', 'password')
+    # db_name = os.getenv('DB_NAME')
+    # db_table = os.getenv('DB_TABLE')
+    
+    matched_item_name = match_item(item_name)
+    if matched_item_name is None:
+        await ctx.response.send_message(content=f'Invalid item name, please try again.')    
+    else:
+        await ctx.response.send_message(content=f'You asked for {matched_item_name[0]}')
 
 
 main()
