@@ -1,1 +1,5 @@
 .env
+nohup.out
+logs/
+!logs/
+logs/**/*.log

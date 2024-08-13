@@ -11,6 +11,9 @@ import discord
 import aiohttp
 from discord import Webhook
 import schedule
+import logging
+from logging.handlers import TimedRotatingFileHandler
+
 
 class WebSocketService:
     def __init__(self):
@@ -26,9 +29,28 @@ class WebSocketService:
         self.listing_create_count = 0
         self.listing_delete_count = 0
 
+        # Set up logging
+        log_dir = 'logs/websocket_logs'
+        os.makedirs(log_dir, exist_ok=True)
+        log_file = os.path.join(log_dir, 'websocket_service.log')
+        self.logger = logging.getLogger('websocket_service')
+        self.logger.setLevel(logging.INFO)
+
+        handler = TimedRotatingFileHandler(log_file, when='midnight', interval=1)
+        handler.suffix = "%Y-%m-%d"  # File suffix will be the date
+        handler.setLevel(logging.INFO)
+
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(funcName)s - %(message)s')
+        handler.setFormatter(formatter)
+        
+        self.logger.addHandler(handler)
+
+        # Schedule daily report
         schedule.every().day.at("14:00").do(self.send_daily_report)
+        self.logger.info("WebSocketService initialized.")
 
     async def webhook_service(self, webhook_type, webhook_title, webhook_message) -> None:
+        self.logger.info(f"Sending webhook: {webhook_type} - {webhook_title}")
         async with aiohttp.ClientSession() as session:
             webhook = Webhook.from_url(self.webhook_url, session=session)
             if webhook_type == 'info':
@@ -49,6 +71,7 @@ class WebSocketService:
             await webhook.send(embed=embed, username='Websocket Service')
 
     async def status_update_webhook(self, webhook_type, webhook_title, webhook_message) -> None:
+        self.logger.info("Sending daily status update webhook.")
         async with aiohttp.ClientSession() as session:
             webhook = Webhook.from_url(self.webhook_url, session=session)
             embed = discord.Embed(title=webhook_title, color=0x249800)
@@ -109,6 +132,7 @@ class WebSocketService:
         Function is used to taken in only the relevant information from the websocket events
         It also adds some extra information for future use
         '''
+        # self.logger.info("Processing incoming websocket events.")
         processed_events_list = []
         for event in msg_json:
             # listing data is stored within the 'payload' key of each event
@@ -173,9 +197,8 @@ class WebSocketService:
             mydb_connection.commit()
             return(True)
         except Exception as e:
+            self.logger.error(f"Error inserting into database: {e}")
             await self.webhook_service("error", "Error!!", f"Error dumping into database! {e}")
-            print(eventsList)
-            print(f'Exception occured when trying to insert element {e}')
             return(False)
         
     async def send_daily_report(self):
@@ -186,6 +209,7 @@ class WebSocketService:
         self.listing_create_count = 0 # Reset event count at the end of the day
         self.listing_delete_count = 0
 
+
     async def main_service(self):
         '''
         Driver function to start the everything, connect to the websocket, process events, and dump events to the database
@@ -195,19 +219,17 @@ class WebSocketService:
             try:
                 async with websockets.connect(url, max_size=30*100000) as ws:
                     await self.webhook_service("info", "Information", "Connection established with the websocket!")
-                    print('Connection established to websocket!')
+                    self.logger.info("Connected to the websocket.")
                     while True:
                         msg = await ws.recv()
                         msg_json = json.loads(msg)
                         processed_event_list = self.process_events(msg_json)
                         res = await self.add_to_database(processed_event_list)
-                        if res:
-                            print(f"Successfully logged {len(processed_event_list)} events into database")
-                        else:
-                            print("Failed to input into database")
+                        if not res:
+                            self.logger.error("Failed to input into database")
             except websockets.exceptions.ConnectionClosedError:
                 await self.webhook_service("default", "Information", "Connection closed, restarting...")
-                print("Connection to websocket closed, restarting...")
+                self.logger.warning("Connection closed, restarting...")
                 continue
 
 

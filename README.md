@@ -26,3 +26,12 @@ A Discord bot built to easily fetch listings for certain items and check the buy
 - `sudo apt-get install libsqlite3-dev`
 - `sudo apt-get install python3.x-dev` (depends on your Python version, for example if you are using Python 3.10 then use `python3.10-dev`)
 - `sudo apt install libmariadb3 libmariadb-dev`
+
+## Running the project
+
+Once everything has been set up, this is how you run the project:
+- When running the project for the first time, while in the project directory, run `poetry install`. This will install all the dependancies required.
+- Within the same project directory, run `poetry shell`
+- `nohup python main.py &` will start and run the driver program in the background. Logs of the various services can be seen within the `logs/` folder under the relevant sub-folders.
+- To stop the script, type `ps aux | grep main.py` in the terminal, you should see an output as such:
+    - As visible here, my process ID is 4389. To kill the process, simply type `kill <ID>`, in this case it would be `kill 4389`.
