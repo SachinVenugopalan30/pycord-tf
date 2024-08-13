@@ -34,4 +34,6 @@ Once everything has been set up, this is how you run the project:
 - Within the same project directory, run `poetry shell`
 - `nohup python main.py &` will start and run the driver program in the background. Logs of the various services can be seen within the `logs/` folder under the relevant sub-folders.
 - To stop the script, type `ps aux | grep main.py` in the terminal, you should see an output as such:
+-     ![image](https://github.com/user-attachments/assets/86f20e2d-050e-469a-9053-e8cc36cd162a)
+
     - As visible here, my process ID is 4389. To kill the process, simply type `kill <ID>`, in this case it would be `kill 4389`.
