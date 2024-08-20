@@ -17,6 +17,17 @@ from logging.handlers import TimedRotatingFileHandler
 
 class WebSocketService:
     def __init__(self):
+        """
+        Initializes the WebSocketService class by loading environment variables, 
+        setting up database connections, and configuring logging. It also schedules 
+        a daily report to be sent at 14:00.
+
+        Parameters:
+            None
+
+        Returns:
+            None
+        """
         load_dotenv()
         self.db_host = os.getenv('DB_HOST', 'localhost')
         self.db_user = os.getenv('DB_USER', 'root')
@@ -50,6 +61,17 @@ class WebSocketService:
         self.logger.info("WebSocketService initialized.")
 
     async def webhook_service(self, webhook_type, webhook_title, webhook_message) -> None:
+        """
+        Sends a webhook to a Discord channel with the specified type, title, and message.
+
+        Parameters:
+            webhook_type (str): The type of webhook to send (e.g. 'info', 'error').
+            webhook_title (str): The title of the webhook message.
+            webhook_message (str): The content of the webhook message.
+
+        Returns:
+            None
+        """
         self.logger.info(f"Sending webhook: {webhook_type} - {webhook_title}")
         async with aiohttp.ClientSession() as session:
             webhook = Webhook.from_url(self.webhook_url, session=session)
@@ -71,6 +93,17 @@ class WebSocketService:
             await webhook.send(embed=embed, username='Websocket Service')
 
     async def status_update_webhook(self, webhook_type, webhook_title, webhook_message) -> None:
+        """
+        Sends a daily status update webhook to a Discord channel with the specified type, title, and message.
+        
+        Parameters:
+            webhook_type (str): The type of webhook to send (not used in this function).
+            webhook_title (str): The title of the webhook message.
+            webhook_message (str): Not used in this function.
+        
+        Returns:
+            None
+        """
         self.logger.info("Sending daily status update webhook.")
         async with aiohttp.ClientSession() as session:
             webhook = Webhook.from_url(self.webhook_url, session=session)
@@ -198,6 +231,8 @@ class WebSocketService:
             return(True)
         except Exception as e:
             self.logger.error(f"Error inserting into database: {e}")
+            self.logger.error(e)
+            self.logger.error(eventsList)
             await self.webhook_service("error", "Error!!", f"Error dumping into database! {e}")
             return(False)
         

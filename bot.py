@@ -52,6 +52,15 @@ async def on_ready():
         exit(1)
 
 async def fetch_buy_snapshots(item_name: str):
+    """
+    Fetches and formats the buy snapshots for a given item.
+
+    Parameters:
+    item_name (str): The name of the item to fetch buy snapshots for.
+
+    Returns:
+    str: A formatted string representing the buy snapshots for the given item.
+    """
     db = mariadb.connect(host=os.getenv("DB_HOST"), user=os.getenv("DB_USER"), password=os.getenv("DB_PASSWORD"), database=os.getenv("DB_NAME"))
     cursor = db.cursor(buffered=True) 
 
@@ -79,6 +88,17 @@ async def fetch_buy_snapshots(item_name: str):
     return buy_table_output_for_discord
 
 async def fetch_sell_snapshots(item_name: str):
+
+    """
+    Fetches and formats the sell snapshots for a given item.
+
+    Parameters:
+    item_name (str): The name of the item to fetch sell snapshots for.
+
+    Returns:
+    str: A formatted string representing the sell snapshots for the given item.
+    """
+    
     db = mariadb.connect(host=os.getenv("DB_HOST"), user=os.getenv("DB_USER"), password=os.getenv("DB_PASSWORD"), database=os.getenv("DB_NAME"))
     cursor = db.cursor(buffered=True) 
 
@@ -116,6 +136,17 @@ async def hello(ctx: discord.interactions.Interaction):
 @tree.command(name='fetch_snapshot', description='Fetches the top 5 latest snapshots')
 @app_commands.describe(item_name="Name of the item")
 async def fetch_last_snapshot(ctx: discord.interactions.Interaction, item_name: str):   
+    """
+    Fetches the top 5 latest snapshots for a given item.
+
+    Args:
+        ctx (discord.interactions.Interaction): The interaction context.
+        item_name (str): The name of the item to fetch snapshots for.
+
+    Returns:
+        None: If the item name is invalid.
+        None: If the snapshots are successfully fetched and sent as follow-up messages.
+    """
 
     matched_item_name = match_item(item_name)
     if matched_item_name is None:

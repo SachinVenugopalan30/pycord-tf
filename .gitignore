@@ -2,4 +2,5 @@
 nohup.out
 logs/
 !logs/
+logs/**/*.log.*
 logs/**/*.log
