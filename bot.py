@@ -84,7 +84,7 @@ async def fetch_buy_snapshots(item_name: str):
         footer=['BUY ORDERS', Merge.LEFT, Merge.LEFT, Merge.LEFT, Merge.LEFT, Merge.LEFT, Merge.LEFT, Merge.LEFT],
         first_col_heading=True
     )
-
+    db.close()
     return buy_table_output_for_discord
 
 async def fetch_sell_snapshots(item_name: str):
@@ -123,6 +123,7 @@ async def fetch_sell_snapshots(item_name: str):
         first_col_heading=True
     )
 
+    db.close()
     return sell_table_output_for_discord
 
 

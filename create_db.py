@@ -55,6 +55,8 @@ def db_create(mycursor) -> bool:
         except Exception as e:
             print(f"Error creating table, error was {e}")
             return False
+        cursor.close()
+        db.close()
         return True
 
         

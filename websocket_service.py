@@ -40,6 +40,14 @@ class WebSocketService:
         self.listing_create_count = 0
         self.listing_delete_count = 0
 
+        self.mydb_connection = mariadb.connect(
+        host = self.db_host,
+        user = self.db_user,
+        password = self.db_password,
+        database = self.db_name
+        )
+        self.mycursor = self.mydb_connection.cursor()
+
         # Set up logging
         log_dir = 'logs/websocket_logs'
         os.makedirs(log_dir, exist_ok=True)
@@ -59,6 +67,9 @@ class WebSocketService:
         # Schedule daily report
         schedule.every().day.at("14:00").do(self.send_daily_report)
         self.logger.info("WebSocketService initialized.")
+
+    def __del__(self):
+        self.mydb_connection.close()
 
     async def webhook_service(self, webhook_type, webhook_title, webhook_message) -> None:
         """
@@ -140,6 +151,8 @@ class WebSocketService:
             5052, 5027, 5031, 5032, 5040, 5033, 5076, 5029, 5077, 5034, 5038, 5051, 5039, 5035, 
             5037, 5054, 5030, 5055, 5056, 5036, 5053, 5028, 5063, 5046, 5062, 5064, 5065, 5061, 5060
         ]
+        if itemPayload['item']['defindex'] is None:
+            return False
         if int(itemPayload['item']['defindex']) in paint_cans:
             return False
         try:
@@ -169,6 +182,8 @@ class WebSocketService:
         processed_events_list = []
         for event in msg_json:
             # listing data is stored within the 'payload' key of each event
+            if event['payload']['appid'] != 440:
+                continue
             event_payload = event['payload']
             
             # creating some date and time stamps for easier tracking and processing
@@ -214,20 +229,12 @@ class WebSocketService:
         '''
         Function to add processed events to the database
         '''
-        mydb_connection = mariadb.connect(
-        host = self.db_host,
-        user = self.db_user,
-        password = self.db_password,
-        database = self.db_name
-        )
-        mycursor = mydb_connection.cursor()
-        mycursor.execute(f"USE {self.db_name};")
-        columns = eventsList[0].keys()
         try:
+            columns = eventsList[0].keys()
             query = f"INSERT INTO {self.db_table} ({', '.join(columns)}) VALUES ({', '.join(['%s'] * len(columns))})"
             values = [tuple(d.values()) for d in eventsList]
-            mycursor.executemany(query, values)
-            mydb_connection.commit()
+            self.mycursor.executemany(query, values)
+            self.mydb_connection.commit()
             return(True)
         except Exception as e:
             self.logger.error(f"Error inserting into database: {e}")
